@@ -3,9 +3,9 @@
   <form (ngSubmit)="submitPlayersNum()" #playersNumForm="ngForm">
     
     <div class="mb-3" class="form-label">
-      <label for="playersNum">Quanti giocatori?</label>
-      <!-- TODO: cambiare 2 in 8 quando funziona!! -->
-      <input id="playersNum" type="number" min="2" max="20" required class="form-control" 
+      <label for="playersNum">Quanti giocatori? (minimo 5, massimo 10)</label>
+      <!-- TODO: cambiare giocatori min 8 e max 20 quando funziona!! -->
+      <input id="playersNum" type="number" min="5" max="10" required class="form-control" 
         [(ngModel)]="playersNum" name="playersNum" #playersNumInput="ngModel">
       <div [hidden]="!playersNumInput || playersNumInput.valid"
         class="text-danger">
@@ -35,7 +35,8 @@
   </form>
 
   <div [hidden] = "!newPlayerSubmitted">
-    {{newPlayer.name}}, il tuo ruolo è: {{newPlayer.role}}
+    {{newPlayer.name}}, il tuo ruolo è: {{newPlayer.role}} <br />
+    Descrizione: {{newPlayer.description}}
     <button class="btn btn-primary" (click) = resetNewPlayer() [hidden] = "players.length == playersNum">Prossimo giocatore</button>
     <button class="btn btn-primary" (click) = resetNewPlayer() [hidden] = "players.length < playersNum">Inizia partita!</button>
   </div>
