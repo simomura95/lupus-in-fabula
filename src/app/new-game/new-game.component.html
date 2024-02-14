@@ -2,8 +2,8 @@
 <div *ngIf="step == 1">
   <form (ngSubmit)="submitPlayersNum()" #playersNumForm="ngForm">
     
-    <div class="mb-3" class="form-label">
-      <label for="playersNum">Quanti giocatori? (minimo 5, massimo 10)</label>
+    <div class="mb-3">
+      <label for="playersNum" class="form-label">Quanti giocatori? (minimo 5, massimo 10)</label>
       <!-- TODO: cambiare giocatori min 8 e max 20 quando funziona!! -->
       <input id="playersNum" type="number" min="5" max="10" required class="form-control" 
         [(ngModel)]="playersNum" name="playersNum" #playersNumInput="ngModel">
@@ -38,6 +38,6 @@
     {{newPlayer.name}}, il tuo ruolo è: {{newPlayer.role}} <br />
     Descrizione: {{newPlayer.description}}
     <button class="btn btn-primary" (click) = resetNewPlayer() [hidden] = "players.length == playersNum">Prossimo giocatore</button>
-    <button class="btn btn-primary" (click) = resetNewPlayer() [hidden] = "players.length < playersNum">Inizia partita!</button>
+    <button class="btn btn-primary" (click) = startGame() [hidden] = "players.length < playersNum">Inizia partita!</button>
   </div>
 </div>

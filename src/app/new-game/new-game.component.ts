@@ -1,8 +1,9 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import Player from '../Player';
+import { FormsModule } from '@angular/forms';
+import {Player} from '../Player';
 import { rolesByPlayerNum, rules } from '../roles';
+import { Router } from '@angular/router';
 
 // Funzione di supporto per mescolare a caso gli elementi di un array, utilizzando l'algoritmo di Fisher-Yates (o Knuth Shuffle)
 function shuffleArray<T>(array: T[]): T[] {
@@ -22,9 +23,9 @@ function shuffleArray<T>(array: T[]): T[] {
   styleUrl: './new-game.component.css'
 })
 export class NewGameComponent {
-  // ngOnInit(): void {
-  //   console.log(roles);
-  // }
+
+  constructor(private router: Router) {}
+
   roles: string[] = [];
   
   // prima, selezionare il numero di giocatori
@@ -42,14 +43,14 @@ export class NewGameComponent {
 
   // poi, ognuno si inserisce e gli viene subito assegnato il ruolo
   players: Player[] = [];
-  newPlayer: Player = {name: '', role: '', description: '', isAlive: true}
+  newPlayer: Player = new Player()
   newPlayerSubmitted = false;
   description = '';
 
   submitNewPlayer() {
     // console.log(this.roles);
     this.newPlayerSubmitted = true
-    // name si popola dal form, isAlive = true come condizione di partenza. Forse ha più senso farci una classe che un'interfaccia?
+    // name si popola dal form, isAlive = true come condizione di partenza
     this.newPlayer.role = this.roles.pop()! // ! per non avere problemi di tipo (non mi è mai undefined)
     let roleDescription = rules.find((role) => role.name == this.newPlayer.role)!.description
     this.newPlayer.description = roleDescription
@@ -57,11 +58,13 @@ export class NewGameComponent {
   }
 
   resetNewPlayer() {
-    this.newPlayer = {name: '', role: '', description: '', isAlive: true}
+    this.newPlayer = new Player()
     this.newPlayerSubmitted = false
   }
 
   startGame() {
-
+    localStorage.setItem("players", JSON.stringify(this.players))
+    console.log(localStorage.getItem("players"))
+    this.router.navigateByUrl("/night");
   }
 }
