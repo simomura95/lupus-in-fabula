@@ -15,6 +15,11 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
+// funzione di supporto per mettere i nomi in minuscolo, eccetto la prima lettera (title case, circa)
+function toTitleCase(s: string): string {
+  return s.slice(0,1).toUpperCase() + s.slice(1).toLowerCase()
+}
+
 @Component({
   selector: 'app-new-game',
   standalone: true,
@@ -42,19 +47,26 @@ export class NewGameComponent {
 
 
   // poi, ognuno si inserisce e gli viene subito assegnato il ruolo
+  names: string[] = [] // suppporto per evitare che si inseriscano nomi doppi, così posso usarli come id
   players: Player[] = [];
   newPlayer: Player = new Player()
   newPlayerSubmitted = false;
-  description = '';
 
   submitNewPlayer() {
     // console.log(this.roles);
     this.newPlayerSubmitted = true
-    // name si popola dal form, isAlive = true come condizione di partenza
-    this.newPlayer.role = this.roles.pop()! // ! per non avere problemi di tipo (non mi è mai undefined)
-    let roleDescription = rules.find((role) => role.name == this.newPlayer.role)!.description
-    this.newPlayer.description = roleDescription
-    this.players.push(this.newPlayer);
+    if (this.isNewPlayerNameUnique()) {
+      this.newPlayer.name = toTitleCase(this.newPlayer.name)
+      this.names.push(this.newPlayer.name)
+      // name si popola dal form, isAlive = true come condizione di partenza
+      this.newPlayer.role = this.roles.pop()! // ! per non avere problemi di tipo (non mi è mai undefined)
+      const roleDetails = rules.find((role) => role.name == this.newPlayer.role)
+      if (roleDetails) { // dovrei averli sempre
+        this.newPlayer.description = roleDetails.description
+        this.newPlayer.clan = roleDetails.clan
+      }
+      this.players.push(this.newPlayer);
+    }
   }
 
   resetNewPlayer() {
@@ -62,9 +74,12 @@ export class NewGameComponent {
     this.newPlayerSubmitted = false
   }
 
+  isNewPlayerNameUnique(): boolean {
+    return !this.names.includes(toTitleCase(this.newPlayer.name));
+  }
+
   startGame() {
     localStorage.setItem("players", JSON.stringify(this.players))
-    console.log(localStorage.getItem("players"))
     this.router.navigateByUrl("/night");
   }
 }

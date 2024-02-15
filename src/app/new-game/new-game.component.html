@@ -27,8 +27,13 @@
       <input id="playerName" type="text" class="form-control" required
         [(ngModel)]="newPlayer.name" name="playerName">
     </div>
+    <!-- impedisco l'input se il nome è un doppione -->
+    <div [hidden]="newPlayer.name == '' || isNewPlayerNameUnique()"
+      class="text-danger">
+      Nome già inserito
+    </div>
     <button type="submit" class="btn btn-primary"
-      [disabled]="!newPlayerForm.form.valid">
+      [disabled]="!newPlayerForm.form.valid || !isNewPlayerNameUnique()">
       Conferma
     </button>
 

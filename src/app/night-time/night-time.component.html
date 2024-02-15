@@ -3,16 +3,23 @@
 <ul>
   <li *ngFor="let player of currPlayers">{{player.name}}</li>
 </ul>
-<form (ngSubmit)="submitTarget()" #targetForm="ngForm">
+<form (ngSubmit)="submitTarget()" #targetForm="ngForm" [hidden] = "showInfo">
 
   <div class="mb-3">
     <label for="currTarget" class="form-label">Chi è il bersaglio?</label>
     <!-- TODO: cambiare giocatori min 8 e max 20 quando funziona!! -->
-    <select id="currTarget" required class="form-control" [(ngModel)]="currTarget" name="currTarget" >
-      <option *ngFor="let player of players" value="player">{{player.name}}</option>
+    <select id="currTarget" required class="form-control" [(ngModel)]="currTargetName" name="currTarget" >
+      <option *ngFor="let player of players" value="{{player.name}}">{{player.name}}</option>
     </select>
   </div>
-  <button type="submit" [disabled]="currTarget.name == ''" class="btn btn-primary">Conferma</button>
+  <button type="submit" class="btn btn-primary">Conferma</button>
 
 </form>
 
+  <!-- mostro a schermo il risultato scelto dal veggente -->
+  <div [hidden] = "!showInfo">
+    <div *ngIf="currRole == 'veggente'">
+      {{ currTargetPlayer.name }} è {{ currTargetPlayer.clan }}
+      <button class="btn btn-primary" (click) = "continue()">Continua</button>
+    </div>
+  </div>
