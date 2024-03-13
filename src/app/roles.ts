@@ -3,6 +3,8 @@ export const rolesByPlayerNum = [ "lupo", "lupo", "contadino", "contadino", "con
 
 export const rolesByTurn = [ "lupo", "guardia", "donnaccia", "veggente"]
 
+export const roleOrder = [ "lupo", "guardia", "donnaccia", "veggente", "contadino"]
+
 export const rules = [
   {
     name: "lupo",

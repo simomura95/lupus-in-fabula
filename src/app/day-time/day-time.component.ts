@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Player } from '../Player';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PlayerTableComponent } from "../player-table/player-table.component";
 
 interface PlayerVotes {
   "name": string,
@@ -10,11 +11,11 @@ interface PlayerVotes {
 }
 
 @Component({
-  selector: 'app-day-time',
-  standalone: true,
-  imports: [NgFor, FormsModule],
-  templateUrl: './day-time.component.html',
-  styleUrl: './day-time.component.css'
+    selector: 'app-day-time',
+    standalone: true,
+    templateUrl: './day-time.component.html',
+    styleUrl: './day-time.component.css',
+    imports: [NgFor, FormsModule, PlayerTableComponent]
 })
 export class DayTimeComponent {
 

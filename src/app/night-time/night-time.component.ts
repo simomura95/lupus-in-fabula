@@ -4,17 +4,18 @@ import {Player} from '../Player';
 import { rolesByTurn } from '../roles';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
+import { PlayerTableComponent } from "../player-table/player-table.component";
 
 interface Targets {
   [key: string]: Player;
 }
 
 @Component({
-  selector: 'app-night-time',
-  standalone: true,
-  imports: [FormsModule, NgFor, NgIf],
-  templateUrl: './night-time.component.html',
-  styleUrl: './night-time.component.css'
+    selector: 'app-night-time',
+    standalone: true,
+    templateUrl: './night-time.component.html',
+    styleUrl: './night-time.component.css',
+    imports: [FormsModule, NgFor, NgIf, PlayerTableComponent]
 })
 export class NightTimeComponent {
 

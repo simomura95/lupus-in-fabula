@@ -1,0 +1,27 @@
+<div class="my-3">
+
+  <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#playerTable" aria-expanded="false" aria-controls="playerTable">
+    Mostra giocatori
+  </button>
+
+  <div class="collapse" id="playerTable">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Ruolo</th>
+          <th scope="col">Clan</th>
+          <th scope="col">Stato</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let player of players">
+          <th scope="row">{{player.name}}</th>
+          <td>{{player.role}}</td>
+          <td>{{player.clan}}</td>
+          <td>{{player.isAlive ? "Vivo" : "Morto"}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

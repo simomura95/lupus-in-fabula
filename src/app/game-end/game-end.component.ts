@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../Player';
+import { PlayerTableComponent } from "../player-table/player-table.component";
 
 @Component({
-  selector: 'app-game-end',
-  standalone: true,
-  imports: [],
-  templateUrl: './game-end.component.html',
-  styleUrl: './game-end.component.css'
+    selector: 'app-game-end',
+    standalone: true,
+    templateUrl: './game-end.component.html',
+    styleUrl: './game-end.component.css',
+    imports: [PlayerTableComponent]
 })
 export class GameEndComponent {
 
