@@ -1,25 +1,51 @@
 <h1>NOTTE</h1>
-<p>Si sveglia: {{currRole}} </p>
-<ul>
-  <li *ngFor="let player of currPlayers">{{player.name}}</li>
-</ul>
-<form (ngSubmit)="submitTarget()" #targetForm="ngForm" [hidden] = "showInfo">
 
-  <div class="mb-3">
-    <label for="currTarget" class="form-label">Chi è il bersaglio?</label>
-    <!-- TODO: cambiare giocatori min 8 e max 20 quando funziona!! -->
-    <select id="currTarget" required class="form-control" [(ngModel)]="currTargetName" name="currTarget" >
-      <option *ngFor="let player of players" value="{{player.name}}">{{player.name}}</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Conferma</button>
+<div *ngIf="!playersKilled">
+  <p>Si sveglia: {{currRole}} </p>
+  <!-- Se ci sono giocatori con quel ruolo -->
+  <div *ngIf="currPlayers.length > 0">
+    <ul>
+      <li *ngFor="let player of currPlayers">{{player.name}}</li>
+    </ul>
+    <form (ngSubmit)="submitTarget()" #targetForm="ngForm" [hidden] = "showInfo">
 
-</form>
-
-  <!-- mostro a schermo il risultato scelto dal veggente -->
-  <div [hidden] = "!showInfo">
-    <div *ngIf="currRole == 'veggente'">
-      {{ currTargetPlayer.name }} è {{ currTargetPlayer.clan }}
-      <button class="btn btn-primary" (click) = "continue()">Continua</button>
+    <div class="mb-3">
+      <label for="currTarget" class="form-label">Chi è il bersaglio?</label>
+      <!-- TODO: cambiare giocatori min 8 e max 20 quando funziona!! -->
+      <select id="currTarget" required class="form-control" [(ngModel)]="currTargetName" name="currTarget" >
+        <option *ngFor="let player of playersAlive" value="{{player.name}}">{{player.name}}</option>
+      </select>
     </div>
+    <button type="submit" class="btn btn-primary">Conferma</button>
+
+    </form>
+
+    <!-- mostro a schermo il risultato scelto dal veggente -->
+    <div [hidden] = "!showInfo">
+      <div *ngIf="currRole == 'veggente'">
+        {{ currTargetPlayer.name }} è {{ currTargetPlayer.clan }}
+        <button class="btn btn-primary" (click) = "continue()">Continua</button>
+      </div>
+    </div>
+
   </div>
+
+  <!-- se i giocatori con quel ruolo sono morti -->
+  <div *ngIf="currPlayers.length == 0">
+    <p>Non c'è più nessun/a "{{currRole}}" vivo/a, ma fingi che ci sia e che scelga qualcuno.</p>
+    <button class="btn btn-primary" (click) = "nextPlayerAwake()">Prossimo giocatore</button>
+  </div>
+</div>
+
+<!-- chi è morto alla fine della notte -->
+<div *ngIf="playersKilled">
+  <p>Nella notte sono morti: </p>
+  <ul *ngIf="playersKilled.length > 0">
+    <li *ngFor="let player of playersKilled">{{player.name}}</li>
+  </ul>
+  <p *ngIf="playersKilled.length == 0">Nessuno!</p>
+  <button class="btn btn-success" (click)="goToDay()">Vai alla mattina</button>
+</div>
+
+
+

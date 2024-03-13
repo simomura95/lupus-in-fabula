@@ -1,1 +1,44 @@
-<p>day-time works!</p>
+<h1>GIORNO</h1>
+<div [hidden]="playerKilled.name">
+  <p>Segnare quanti voti prende ognuno: </p>
+
+  <!-- Votazione (si aggiornano dopo uno spareggio) -->
+  <form (ngSubmit)="submitVotes()" #votesForm="ngForm" >
+    <div *ngFor="let player of playerVotes" class="row mb-2 align-items-center">
+      
+      <div class="col-1">
+        <label for="{{player.name}}" class="form-label">{{player.name}}</label>
+      </div>
+
+      <div class="col-auto">
+        <input id="{{player.name}}" type="number" min="0" max="{{playersAlive.length}}" required class="form-control" 
+          [(ngModel)]="player.votes" name="{{player.name}}">
+      </div>
+
+       <!-- non riesco a identificare l'elemento per farci il check con valid, ma va bene anche così-->
+      <div [hidden]="player.votes >= 0 && player.votes <= playersAlive.length" class="text-danger col-auto">
+        Numero di voti non valido
+      </div>
+
+    </div>
+    <button type="submit" [disabled]="!validTotalVotes() || !votesForm.form.valid" class="btn btn-primary">Conferma</button>
+  </form>
+
+  <div [hidden]="!abilitaKillRandom || playerKilled.name">
+    <p>Se non si riesce a risolvere lo spareggio...</p>
+    <button (click)="killRandom()">Scegli a caso</button> 
+  </div>
+
+  <div>
+    <p> Giocatori votanti: {{playersAlive.length}} </p>
+    <p> Voti totali: {{countTotalVotes()}} </p>
+  </div>
+</div>
+
+<div [hidden]="!playerKilled.name">
+  <p>{{playerKilled.name}} è stato giustiziato con {{playersToKill[0] ? playersToKill[0].votes : '?'}} voti</p>
+  <button class="btn btn-success" (click)="goToNight()">Vai alla notte</button>
+</div>
+
+
+
