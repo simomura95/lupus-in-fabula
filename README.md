@@ -1,27 +1,24 @@
 # LupusInFabula
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
+Website to play the popular italian party game (also known as Mafia).
 
-## Development server
+## Panoramica
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+È costruito in Angular con TypeScript ed è molto semplice, pensato per dare un supporto al narratore. Tutte le informazioni sono salvate nel localStorage del browser, permettendo così di gestire tutto a frontend tramite JavaScript. Attualmente è gestito un numero di giocatori da 8 a 11.
 
-## Code scaffolding
+Inizialmente i vari partecipanti si passano il telefono, inseriscono il proprio nome e ricevono il ruolo, con una breve descrizione di cosa fa.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Quindi, il narratore conduce il gioco come al solito: di notte fa svegliare i vari ruoli a turno ed inserisce il loro bersaglio, recuperando subito eventuali informazioni necessarie (es. viene mostrato a schermo se il bersaglio del veggente è umano o no).
+Alla fine della notte, il programma calcola in automatico le vittime e le comunica.
+Di giorno permette di inserire i vari voti ottenuti da ogni giocatore. Se non si riesce a risolvere uno spareggio, è possibile estrarre una vittima a caso .
 
-## Build
+Se in qualunque fase si sbaglia ad inserire, prima della conferma finale è possibile aggiornare la pagina per annullarla e ripeterla dall'inizio.
+Se al termine di un giorno o una notte si verificano le condizioni di fine gioco, va automaticamente alla maschera finale.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+È possibile in qualunque momento consultare l'elenco dei giocatori, il loro ruolo ed il loro stato (vivo/morto), nonché passare a controllare le regole.
+Se per qualunque motivo si esce per errore dalla partita, il tasto "Continua" della home permette di riprendere da dove si era lasciato.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Possibili sviluppi
+- Aggiungere lingua inglese e possibilità di cambiare lingua
+- Aggiungere modalità chiara/scura
+- Aggiungere più ruoli, aumentando il numero massimo permesso di giocatori
