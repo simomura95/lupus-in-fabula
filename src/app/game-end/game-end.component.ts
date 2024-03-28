@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Player } from '../Player';
 import { PlayerTableComponent } from "../player-table/player-table.component";
 
@@ -8,7 +8,7 @@ import { PlayerTableComponent } from "../player-table/player-table.component";
     standalone: true,
     templateUrl: './game-end.component.html',
     styleUrl: './game-end.component.css',
-    imports: [PlayerTableComponent]
+    imports: [PlayerTableComponent, RouterModule]
 })
 export class GameEndComponent {
 
@@ -27,7 +27,6 @@ export class GameEndComponent {
     }
 
     this.players = JSON.parse(playersData)
-    console.log(this.players)
     this.playersAlive = this.players.filter(player => player.isAlive == true)
 
     const numLupi = this.playersAlive.reduce(((sum, currPlayer) => currPlayer.clan == "lupo" ? sum+=1 : sum), 0)
@@ -38,7 +37,6 @@ export class GameEndComponent {
       this.winnerClan = 'umano'
     }
 
-    localStorage.removeItem("players")
   }
 
 

@@ -1,0 +1,39 @@
+<div class="text-start">
+  <!-- <button class="btn btn-secondary" (click)="goBack()">Indietro</button> -->
+
+  <h2 class="text-center text-sm-start">INTRODUZIONE</h2>
+  <p>Siete tutti normali abitanti di un normale villaggio... eccetto che alcuni di voi in realtà sono lupi mannari!<p>
+  <p>Ogni notte, i lupi si svegliano e provano ad uccidere un altro abitante. Però non tutti gli umani sono indifesi: alcuni hanno poteri particolari (spiegati sotto).</p>
+  <p>
+    Ogni giorno, si scopre com'è andata la notte, se e quali concittadini sono trapassati, e si fa una votazione popolare per linciare un abitante:
+    questo è il mezzo principale che gli umani hanno per uccidere i lupi.
+  </p>
+
+  <h2 class="text-center text-sm-start">SCOPO DEL GIOCO</h2>
+  <p>Il gioco finisce quando una delle fazioni raggiunge il suo obiettivo:</p>
+  <ul>
+    <li *ngFor="let obj of winCondition">
+      <b>{{obj.plurale.toUpperCase()}}</b>: {{obj.description}}
+    </li>
+  </ul>
+
+  <h2 class="text-center text-sm-start">RUOLI</h2>
+  <p>Di seguito si spiegano i poteri per ogni ruolo:</p>
+  <ul>
+    <li *ngFor="let role of roles">
+      <b>{{role.name.toUpperCase()}}</b>: {{role.description}}
+    </li>
+  </ul>
+  
+  <p>I ruoli presenti dipendono dal numero di giocatori. Bisogna essere minimo in 8 per giocare.</p>
+  <ul>
+    <li *ngFor="let n of numPlayersLegit; let i = index">
+      <!-- &nbsp; è il carattere di spazio, da fare così altrimenti non viene stampato -->
+      {{n<10 ? '&nbsp;' + n + '&nbsp;' : n}} giocatori:{{n<10 ? '' : ''}} {{groupRoles(rolesByPlayerNum.slice(0, n))}}
+    </li>
+  </ul>
+
+  <div class="text-center text-sm-start">
+    <button class="btn btn-secondary btn-lg" (click)="goBack()">Indietro</button>
+  </div>
+</div>

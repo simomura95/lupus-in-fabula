@@ -1,48 +1,54 @@
-<h1>GIORNO</h1>
-<div [hidden]="playerKilled.name">
-  <p>Segnare quanti voti prende ognuno: </p>
+<div>
+  <h1>GIORNO</h1>
+  <div [hidden]="playerKilled.name">
+    <p>Segnare quanti voti prende ognuno: <span [hidden]="!abilitaKillRandom || playerKilled.name">(spareggio)</span></p>
 
-  <!-- Votazione (si aggiornano dopo uno spareggio) -->
-  <form (ngSubmit)="submitVotes()" #votesForm="ngForm" >
-    <div *ngFor="let player of playerVotes" class="row mb-2 align-items-center">
-      
-      <div class="col-1">
-        <label for="{{player.name}}" class="form-label">{{player.name}}</label>
+    <!-- Votazione (si aggiornano dopo uno spareggio) -->
+    <form (ngSubmit)="submitVotes()" #votesForm="ngForm" class="d-flex flex-column my-2">
+      <div *ngFor="let player of playerVotes" class="row mb-2 align-items-center justify-content-center px-2">
+        
+        <div class="col-7 px-0">
+          <label for="{{player.name}}" class="form-label col-7">{{player.name}}</label>
+        </div>
+
+        <div class="col-5 px-0">
+          <input id="{{player.name}}" type="number" min="0" max="{{playersAlive.length}}" required class="form-control" 
+            [(ngModel)]="player.votes" name="{{player.name}}">
+        </div>
+
+        <!-- non riesco a identificare l'elemento per farci il check con valid, ma va bene anche così-->
+        <span *ngIf="player.votes < 0 || player.votes > playersAlive.length" class="align-self-center text-danger px-0">
+          Numero di voti non valido
+        </span>
+
       </div>
+      <button type="submit" [disabled]="!validTotalVotes() || !votesForm.form.valid" class="btn btn-primary">Conferma</button>
+    </form>
 
-      <div class="col-auto">
-        <input id="{{player.name}}" type="number" min="0" max="{{playersAlive.length}}" required class="form-control" 
-          [(ngModel)]="player.votes" name="{{player.name}}">
-      </div>
-
-       <!-- non riesco a identificare l'elemento per farci il check con valid, ma va bene anche così-->
-      <div [hidden]="player.votes >= 0 && player.votes <= playersAlive.length" class="text-danger col-auto">
-        Numero di voti non valido
-      </div>
-
+    <div>
+      <p>
+        Giocatori votanti: {{playersAlive.length}} <br>
+        Voti totali: {{countTotalVotes()}}
+      </p>
     </div>
-    <button type="submit" [disabled]="!validTotalVotes() || !votesForm.form.valid" class="btn btn-primary">Conferma</button>
-  </form>
+  </div>
 
   <div [hidden]="!abilitaKillRandom || playerKilled.name">
-    <p>Se non si riesce a risolvere lo spareggio...</p>
-    <button (click)="killRandom()">Scegli a caso</button> 
+    <p class="mb-0">Se non si riesce a risolvere lo spareggio...</p>
+    <button class="btn btn-danger w-100" (click)="killRandom()">Scegli a caso</button> 
   </div>
 
-  <div>
-    <p> Giocatori votanti: {{playersAlive.length}} </p>
-    <p> Voti totali: {{countTotalVotes()}} </p>
+  <div [hidden]="!playerKilled.name">
+    <p>{{playerKilled.name}} è stato giustiziato con {{playersToKill[0] ? playersToKill[0].votes : '?'}} voti</p>
+    <button class="btn btn-success w-100" (click)="goToNight()">Vai alla notte</button>
+
+    <div class="my-3">
+      <p class="small">In caso di errore: aggiornare la pagina per ricominciare il giorno corrente</p>
+    </div>
   </div>
+
+  <app-player-table
+    class="mt-3"
+    [players]="players">
+  </app-player-table>
 </div>
-
-<div [hidden]="!playerKilled.name">
-  <p>{{playerKilled.name}} è stato giustiziato con {{playersToKill[0] ? playersToKill[0].votes : '?'}} voti</p>
-  <button class="btn btn-success" (click)="goToNight()">Vai alla notte</button>
-</div>
-
-<app-player-table
-  [players]="players">
-</app-player-table>
-
-
-

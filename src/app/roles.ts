@@ -1,11 +1,11 @@
+export const rolesByPlayerNum = [ "lupo", "lupo", "contadino", "contadino", "contadino", "guardia", "veggente", "donnaccia", "lupo", "contadino" , "medium" ]
 
-export const rolesByPlayerNum = [ "lupo", "lupo", "contadino", "contadino", "contadino", "guardia", "veggente", "donnaccia", "lupo", "contadino" ]
+export const numPlayersMin = 8
+export const numPlayersMax = rolesByPlayerNum.length
 
-export const rolesByTurn = [ "lupo", "guardia", "donnaccia", "veggente"]
+export const roleOrder = [ "lupo", "guardia", "donnaccia", "veggente", "medium", "contadino"]
 
-export const roleOrder = [ "lupo", "guardia", "donnaccia", "veggente", "contadino"]
-
-export const rules = [
+export const roles = [
   {
     name: "lupo",
     clan: "lupo",
@@ -24,7 +24,12 @@ export const rules = [
   {
     name: "veggente",
     clan: "umano",
-    description: "Ogni notte scegli una persona ed il narratore ti dirà se è umano oppure no."
+    description: "Ogni notte scegli una persona viva ed il narratore ti dirà se è umano oppure no."
+  },
+  {
+    name: "medium",
+    clan: "umano",
+    description: "Ogni notte scegli una persona morta ed il narratore ti dirà se è umano oppure no."
   },
   {
     name: "donnaccia",
@@ -36,10 +41,12 @@ export const rules = [
 export const winCondition =  [
   {
     clan: "lupo",
-    description: "I lupi vincono se, al termine di una mattina, sono di più degli umani."
+    plurale: "lupi",
+    description: "Vincono se, al termine di una mattina, sono di più degli umani."
   },
   {
     clan: "umano",
-    description: "Gli umani vincono se tutti i lupi muoiono."
+    plurale: "umani",
+    description: "Vincono se tutti i lupi muoiono."
   }
 ]

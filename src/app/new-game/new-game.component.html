@@ -1,48 +1,59 @@
-<!-- 1: inserire numero giocatori -->
-<div *ngIf="step == 1">
-  <form (ngSubmit)="submitPlayersNum()" #playersNumForm="ngForm">
-    
-    <div class="mb-3">
-      <label for="playersNum" class="form-label">Quanti giocatori? (minimo 5, massimo 10)</label>
-      <!-- TODO: cambiare giocatori min 8 e max 20 quando funziona!! -->
-      <input id="playersNum" type="number" min="5" max="10" required class="form-control" 
-        [(ngModel)]="playersNum" name="playersNum" #playersNumInput="ngModel">
-      <div [hidden]="!playersNumInput || playersNumInput.valid"
-        class="text-danger">
-        Il numero di giocatori deve essere un numero compreso tra 8 e 20
+<div class="">
+
+  <!-- 1: inserire numero giocatori -->
+  <div *ngIf="step == 1">
+    <form (ngSubmit)="submitPlayersNum()" #playersNumForm="ngForm">
+      
+      <div class="mb-3 d-flex flex-column gap-3">
+        <label for="playersNum" class="form-label fs-5">Quanti giocatori?<br> <small>(minimo {{numPlayersMin}}, massimo {{numPlayersMax}})</small></label>
+        <input id="playersNum" type="number" min="{{numPlayersMin}}" max="{{numPlayersMax}}" required class="form-control" 
+          [(ngModel)]="playersNum" name="playersNum" #playersNumInput="ngModel">
+        <div [hidden]="!playersNumInput || playersNumInput.valid"
+          class="text-danger">
+          Il numero di giocatori deve essere un numero compreso tra {{numPlayersMin}} e {{numPlayersMax}}
+        </div>
+      
+        <button type="submit" [disabled]="!playersNumForm.form.valid" class="btn btn-primary">Conferma</button>
       </div>
-    </div>
-    <button type="submit" [disabled]="!playersNumForm.form.valid" class="btn btn-primary">Conferma</button>
-
-  </form>
-</div>
-
-<!-- 2: i giocatori si inseriscono, uno alla volta, e ricevono il loro ruolo -->
-<div *ngIf="step == 2">
-  <p>Giocatore {{players.length + 1}} </p>
-  <form (ngSubmit)="submitNewPlayer()" #newPlayerForm="ngForm" [hidden] = "newPlayerSubmitted">
-    
-    <div class="mb-3" class="form-label">
-      <label for="playerName">Nome</label>
-      <input id="playerName" type="text" class="form-control" required
-        [(ngModel)]="newPlayer.name" name="playerName">
-    </div>
-    <!-- impedisco l'input se il nome è un doppione -->
-    <div [hidden]="newPlayer.name == '' || isNewPlayerNameUnique()"
-      class="text-danger">
-      Nome già inserito
-    </div>
-    <button type="submit" class="btn btn-primary"
-      [disabled]="!newPlayerForm.form.valid || !isNewPlayerNameUnique()">
-      Conferma
-    </button>
-
-  </form>
-
-  <div [hidden] = "!newPlayerSubmitted">
-    {{newPlayer.name}}, il tuo ruolo è: {{newPlayer.role}} <br />
-    Descrizione: {{newPlayer.description}}
-    <button class="btn btn-primary" (click) = resetNewPlayer() [hidden] = "players.length == playersNum">Prossimo giocatore</button>
-    <button class="btn btn-primary" (click) = startGame() [hidden] = "players.length < playersNum">Inizia partita!</button>
+    </form>
   </div>
+
+  <!-- 2: i giocatori si inseriscono, uno alla volta, e ricevono il loro ruolo -->
+  <div *ngIf="step == 2">
+    <p class="lead">Giocatore {{players.length + 1}} </p>
+    <form (ngSubmit)="submitNewPlayer()" #newPlayerForm="ngForm" [hidden]="newPlayerSubmitted">
+      <div class="mb-3 d-flex flex-column gap-3">
+        <div class="fs-5">
+          <label for="playerName" class="form-label">Nome</label>
+          <input id="playerName" type="text" class="form-control" required
+            [(ngModel)]="newPlayer.name" name="playerName">
+        </div>
+        <!-- impedisco l'input se il nome è un doppione -->
+        <div [hidden]="newPlayer.name == '' || isNewPlayerNameUnique()"
+          class="text-danger">
+          Nome già inserito
+        </div>
+        <button type="submit" class="btn btn-primary"
+          [disabled]="!newPlayerForm.form.valid || !isNewPlayerNameUnique()">
+          Conferma
+        </button>
+      </div>
+    </form>
+
+    <div [hidden] = "!newPlayerSubmitted">
+      <hr>
+      <p>{{newPlayer.name}}, il tuo ruolo è: <p>
+      <p class="fs-3">{{newPlayer.role.toUpperCase()}}</p>
+      <p>{{newPlayer.description}}</p>
+      <button class="btn btn-primary" (click)=nextPlayer()>Prossimo giocatore</button>
+    </div>
+  </div>
+
+  <div *ngIf="step == 3" class="fs-5">
+    <p>{{players.length}} partecipanti inseriti.</p>
+    <p>Il narratore può iniziare il gioco</p>
+    <button class="btn btn-primary" (click)="startGame()">Inizia partita!</button>
+  </div>
+
 </div>
+

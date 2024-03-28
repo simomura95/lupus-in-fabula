@@ -1,8 +1,8 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {Player} from '../Player';
-import { rolesByPlayerNum, rules } from '../roles';
+import {Player, sortPlayers} from '../Player';
+import { rolesByPlayerNum, roles, numPlayersMin, numPlayersMax } from '../roles';
 import { Router } from '@angular/router';
 
 // Funzione di supporto per mescolare a caso gli elementi di un array, utilizzando l'algoritmo di Fisher-Yates (o Knuth Shuffle)
@@ -15,7 +15,7 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
-// funzione di supporto per mettere i nomi in minuscolo, eccetto la prima lettera (title case, circa)
+// funzione di supporto per mettere i nomi in minuscolo, eccetto la prima lettera (title case)
 function toTitleCase(s: string): string {
   return s.slice(0,1).toUpperCase() + s.slice(1).toLowerCase()
 }
@@ -31,16 +31,17 @@ export class NewGameComponent {
 
   constructor(private router: Router) {}
 
+  numPlayersMin = numPlayersMin
+  numPlayersMax = numPlayersMax
   roles: string[] = [];
   
   // prima, selezionare il numero di giocatori
   step: number = 1;
 
   // TODO: cambiare in 8 quando funziona!!
-  playersNum: number = 5;
+  playersNum: number = 8;
 
   submitPlayersNum() {
-    // console.log(this.playersNum)
     this.roles = shuffleArray(rolesByPlayerNum.splice(0, this.playersNum))
     this.step = 2;
   }
@@ -53,25 +54,29 @@ export class NewGameComponent {
   newPlayerSubmitted = false;
 
   submitNewPlayer() {
-    // console.log(this.roles);
     this.newPlayerSubmitted = true
     if (this.isNewPlayerNameUnique()) {
       this.newPlayer.name = toTitleCase(this.newPlayer.name)
       this.names.push(this.newPlayer.name)
       // name si popola dal form, isAlive = true come condizione di partenza
       this.newPlayer.role = this.roles.pop()! // ! per non avere problemi di tipo (non mi è mai undefined)
-      const roleDetails = rules.find((role) => role.name == this.newPlayer.role)
+      const roleDetails = roles.find((role) => role.name == this.newPlayer.role)
       if (roleDetails) { // dovrei averli sempre
         this.newPlayer.description = roleDetails.description
         this.newPlayer.clan = roleDetails.clan
       }
-      this.players.push(this.newPlayer);
     }
   }
 
-  resetNewPlayer() {
-    this.newPlayer = new Player()
-    this.newPlayerSubmitted = false
+  nextPlayer() {
+    this.players.push(this.newPlayer);
+    if (this.players.length < this.playersNum) {
+      // resetto giocatore e continuo a inserire
+      this.newPlayer = new Player()
+      this.newPlayerSubmitted = false  
+    } else {
+      this.step = 3
+    }
   }
 
   isNewPlayerNameUnique(): boolean {
@@ -79,7 +84,10 @@ export class NewGameComponent {
   }
 
   startGame() {
+    this.players = sortPlayers(this.players, 'name')
     localStorage.setItem("players", JSON.stringify(this.players))
+    localStorage.setItem("time", 'night')
+    localStorage.setItem("dayNumber", '1')
     this.router.navigateByUrl("/night");
   }
 }

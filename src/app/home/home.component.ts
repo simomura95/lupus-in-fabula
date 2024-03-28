@@ -9,5 +9,17 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  canContinue: boolean = false
+  timeEndpoint: string = ''
 
+  ngOnInit() {
+    const dayNumberData = localStorage.getItem('dayNumber')
+    const timeData = localStorage.getItem('time')
+    const playersData = localStorage.getItem("players")
+
+    if (dayNumberData && timeData && playersData) {
+      this.canContinue = true
+      this.timeEndpoint = '/' + timeData
+    }
+  }
 }
