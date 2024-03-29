@@ -5,7 +5,7 @@
     <p>Si sveglia: <b>{{currRole.toUpperCase()}}</b> </p>
     <!-- Se ci sono giocatori con quel ruolo -->
     <div *ngIf="currPlayers.length > 0">
-        <p *ngFor="let player of currPlayers.sort()" class="mb-2">
+        <p *ngFor="let player of currPlayers" class="mb-2">
           ➤ {{player.name}}
         </p>
       <form (ngSubmit)="submitTarget()" #targetForm="ngForm" [hidden]="showInfo">

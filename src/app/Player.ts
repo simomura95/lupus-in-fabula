@@ -31,6 +31,10 @@ export function sortPlayers(players: Player[], method: string = 'name'): Player[
             const roleOrderB = roleOrder.indexOf(b.role);
             // Se entrambi i ruoli sono presenti nell'ordine personalizzato, ordina in base all'ordine definito
             if (roleOrderA !== -1 && roleOrderB !== -1) {
+              // se hanno stesso ruolo, fai ordine alfabetico
+              if (roleOrderA === roleOrderB) {
+                return a.name.localeCompare(b.name);
+              }  
               return roleOrderA - roleOrderB;
             }
             // Altrimenti, ordina in modo alfabetico (non dovrebbe succedere)

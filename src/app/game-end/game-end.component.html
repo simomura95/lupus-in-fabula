@@ -1,8 +1,19 @@
 <div>
-  <p class="fs-5">Hanno vinto {{winnerClan == 'lupo' ? 'i lupi' : 'gli umani'}}!!</p>
+  <p class="fs-5">Hanno vinto:</p>
+  <p class="fs-1 fw-bold">{{winnerClan.plurale.toUpperCase()}}!</p>
+
+  <div>
+    <div *ngFor="let player of players">
+      <p *ngIf="player.clan === winnerClan.clan">
+        ➤ <b>{{player.name}}</b> ({{player.isAlive ? "vivo" : "morto"}})
+      </p>
+    </div>
+  </div>
+
   <a class="btn btn-primary w-100" type="button" routerLink="/home">
     Torna alla home
   </a>
+
 </div>
 
 <app-player-table
